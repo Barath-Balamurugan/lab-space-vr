@@ -7,22 +7,44 @@ public class GrowthRate : MonoBehaviour
     [Header("Radius (nm)")]
     public TextMeshProUGUI radius;
 
+    [Header("Radius (nm)")]
+    public TextMeshProUGUI temperature;
+
     [Header("Required Height (nm)")]
     public TextMeshProUGUI requied_height;
+
+    public GameObject nanoWire;
+    Vector3 nanoWireHeight;
+
+    public float simSpeed = 1e5f;
+
     private Parameters p;
+
+    private bool growth_enabled = true;
 
     void Start()
     {
         p = new Parameters();
+        nanoWireHeight = nanoWire.transform.localScale;
     }
 
     void Update()
     {
-        if (radius != null && double.TryParse(radius.text, out double rNm))
+        if (radius != null && double.TryParse(radius.text, out double rNm) && growth_enabled)
         {
             double mPerSec = ComputeGrowthRate(p, rNm);
             double nmPerSec = mPerSec * 1e9;
             Debug.Log($"Growth rate: {mPerSec:E6} m/s ({nmPerSec:F4} nm/s)");
+
+            nanoWireHeight.y += (float)mPerSec * Time.unscaledDeltaTime * simSpeed;
+
+            nanoWire.transform.localScale = nanoWireHeight;
+        }
+
+        if (requied_height != null && double.TryParse(requied_height.text, out double targetNm)) {
+            if (nanoWireHeight.y * 1e-9 >= targetNm * 1e-9) {
+                growth_enabled = false;
+            }
         }
     }
 
