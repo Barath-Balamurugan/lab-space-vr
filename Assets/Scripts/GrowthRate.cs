@@ -1,31 +1,40 @@
 using UnityEngine;
 using System;
+using TMPro;
 
 public class GrowthRate : MonoBehaviour
 {
-    Parameters parameters;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Header("Radius (nm)")]
+    public TextMeshProUGUI radius;
+
+    [Header("Required Height (nm)")]
+    public TextMeshProUGUI requied_height;
+    private Parameters p;
+
     void Start()
     {
-        Debug.Log("Computed Growth Data " + ComputeGrowthRate(parameters));
+        p = new Parameters();
     }
 
-    // Update is called once per frame
     void Update()
     {
-
+        if (radius != null && double.TryParse(radius.text, out double rNm))
+        {
+            double mPerSec = ComputeGrowthRate(p, rNm);
+            double nmPerSec = mPerSec * 1e9;
+            Debug.Log($"Growth rate: {mPerSec:E6} m/s ({nmPerSec:F4} nm/s)");
+        }
     }
 
     public static double GetPrefactor(double N0, double v, double omega, double C0, double QD, double k, double T, double C_C0)
     {
-        // np.log -> Math.Log (natural log)
         return N0 * v * omega * C0 * Math.Exp(-QD) * C_C0 * Math.Sqrt(Math.Log(C_C0));
     }
 
     public static double GetNucleationBarrier(double x, double a, double k, double T, double C_C0)
     {
         double numerator = -Math.PI * Math.Pow((x * a) / (k * T), 2.0);
-        double denominator = Math.Log(C_C0); // natural log
+        double denominator = Math.Log(C_C0);
         return Math.Exp(numerator / denominator);
     }
 
@@ -53,12 +62,11 @@ public class GrowthRate : MonoBehaviour
         return prefactor * barrier;
     }
 
-    public static double ComputeGrowthRate(Parameters p)
+    public static double ComputeGrowthRate(Parameters p, double radius)
     {
-        // Mirror the Python: R = J * π * r^2 * a
-        // Note: r_radius is given in "nm" per your comment; Python used it as-is.
         double J = GetNucleationFrequencyPerUnitArea(p);
-        return J * Math.PI * Math.Pow(p.r_radius, 2.0) * p.a_automic_size;
+        double r = radius * 1e-9;
+        return J * Math.PI * Math.Pow(r, 2) * p.a_automic_size;
     }
 }
 
@@ -68,12 +76,12 @@ public class Parameters
         public double N0_number_of_atomic_sites = 1e19;     // m^-2
         public double v_vibrational_frequency = 1e13;       // s^-1
         public double omega_atomic_volume = 2e-29;          // m^3/atom
-        public double QD_activation_energy = 5.0;           // dimensionless "in kT" if that's what you intend
-        public double T_temperature = 900.0;                // Kelvin if that's what you intend
-        public double C_C0_supersaturation = 1.2;           // C/C0 (must be > 1)
+        public double QD_activation_energy = 10.0;           // dimensionless "in kT" if that's what you intend
+        public double T_temperature = 900.0 + 273.15;                // Kelvin if that's what you intend
+        public double C_C0_supersaturation = 1.4;           // C/C0 (must be > 1)
         public double x_edge_energy = 1e-10;                // J m^-1
         public double a_automic_size = 2.7e-10;             // m
         public double k_boltzmann_constant = 1.380649e-23;  // J/K
-        public double r_radius = 10.0;                      // nm (note: your Python uses this as-is)
-        public double C0 = 1.0;                             // baseline concentration (set appropriately)
+        public double r_radius = 100 * 1e-8;                      // nm (note: your Python uses this as-is)
+        public double C0 = 1.0/2e-29;                             // baseline concentration (set appropriately)
     }
