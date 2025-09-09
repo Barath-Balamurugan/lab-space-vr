@@ -860,7 +860,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: {fileID: 33208889}
-  requied_height: {fileID: 0}
+  temperature: {fileID: 0}
+  requied_height: {fileID: 1742503190}
+  nanoWire: {fileID: 183941924}
+  simSpeed: 100
 --- !u!1 &70732730
 GameObject:
   m_ObjectHideFlags: 0
@@ -8213,7 +8216,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.1036, y: 1.22593, z: 0.5527}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 877567467}
@@ -74300,6 +74303,17 @@ MonoBehaviour:
   _freezeRotationX: 0
   _freezeRotationY: 0
   _freezeRotationZ: 0
+--- !u!114 &1742503190 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8347396931199704361, guid: baff30a35e969d445a7525cace3be1e4, type: 3}
+  m_PrefabInstance: {fileID: 1718477043}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1743504844
 PrefabInstance:
   m_ObjectHideFlags: 0
