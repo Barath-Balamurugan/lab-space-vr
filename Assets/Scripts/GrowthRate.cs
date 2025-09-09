@@ -7,7 +7,7 @@ public class GrowthRate : MonoBehaviour
     [Header("Radius (nm)")]
     public TextMeshProUGUI radius;
 
-    [Header("Radius (nm)")]
+    [Header("Temperature (C)")]
     public TextMeshProUGUI temperature;
 
     [Header("Required Height (nm)")]
@@ -41,8 +41,10 @@ public class GrowthRate : MonoBehaviour
             nanoWire.transform.localScale = nanoWireHeight;
         }
 
-        if (requied_height != null && double.TryParse(requied_height.text, out double targetNm)) {
-            if (nanoWireHeight.y * 1e-9 >= targetNm * 1e-9) {
+        if (requied_height != null && double.TryParse(requied_height.text, out double targetNm))
+        {
+            if (nanoWireHeight.y * 1e-9 >= targetNm * 1e-9)
+            {
                 growth_enabled = false;
             }
         }

@@ -27,4 +27,7 @@ Left/right ends show the flange hardware and tube supports.*
 
 *Side profile with the lid raised showing the hinge motion and feedthrough cut-out alignment.*
 
-
+### Simple Simulated NanoWire Growth
+https://github.com/user-attachments/assets/f950e1ea-91ac-49de-8926-ee17ca3e109b
+Inital parameters used: 1. Radius, 2. Temperature, 3. Required Height (of the Nanowire)
+*The used scale for is meters for better visualization*
